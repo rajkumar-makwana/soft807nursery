@@ -1,0 +1,123 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Orders
+{% endblock title %}
+
+{% block page-name %}
+  All Orders
+{% endblock page-name %}
+
+{% block body %}
+{% load custom_filter %}
+<style>
+    .active-product,.deactive-product{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        background-color: rgb(6, 6, 35);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;   
+    }
+    .active-product .active-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #53e453;
+        box-shadow: 0px 0px 10px #53e453;
+    }
+    .deactive-product .deactive-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ff1a1a;
+        box-shadow: 0px 0px 10px #ff1a1a;
+    }
+    .thumbnail{
+        max-width: 200px;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+    <div class="all-products-wrapper">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Thumbnails</td>
+                    <td>User Name</td>
+                    <td>User Email</td>
+                    <td>Address</td>
+                    <td>User Phone Number</td>
+                    <td>Order Date</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                  <tr>
+                    <td>#{{order.id}}</td>
+                    <td>
+                        {% for product_id in order.products|eval_val%}
+                        {% for image in first_images  %}
+                        {% if image.product.id == product_id %}
+                        <!-- <img src="/media/{{image.image}}" alt="" class="thumbnail">    -->
+                        <img src="/media/{{image.image}}" class="thumbnail" alt="">
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                    </td>
+                    <td>{{order.user.first_name}} {{order.user.last_name}}</td>
+                    <td>{{order.address.email}}</td>
+                    <td>
+                        Address : {{order.address.address}}
+                        <br>
+                        City : {{order.address.city}}
+                        <br>
+                        State : {{order.address.state}}
+                        <br>
+                        Country : {{order.address.country}}
+                        <br>
+                        Zip Code : {{order.address.pin_code}}
+                        <br>
+                        </td>
+                    <td>{{order.address.phone_number}}</td>
+                    <td>
+                        {{order.date_time}}
+                    </td>
+                    <td>
+                        {% if order.is_completed %}
+                          Completed ✔️
+                          {%else%}
+                          <form action="{%url 'complete-order'%}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{order.id}}" name="order_id">
+                            <button class="btn btn-success">Mark as complete</button>
+                          </form>
+                        {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function confirmProductDelete(id){
+            let span = document.getElementById(`id_delete_product_span_${id}`);
+            let delete_button = document.getElementById(`id_delete_product_button_${id}`)
+            if (span.classList.contains('hidden')){
+                span.classList.remove('hidden');
+                delete_button.classList.add('hidden')
+            }
+            else{
+                span.classList.add('hidden');
+                delete_button.classList.remove('hidden')
+
+            }
+        }
+    </script>
+{% endblock body %}

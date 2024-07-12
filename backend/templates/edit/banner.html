@@ -1,0 +1,119 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Edit Banner
+{% endblock title %}
+
+{% block page-name %}
+  Edit Banner
+{% endblock page-name %}
+
+{% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+    .add-product-section-43264 .container {
+        max-width: 90%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .add-product-section-43264 h2 {
+        text-align: center;
+    }
+    .add-product-section-43264 form {
+        margin-top: 20px;
+    }
+    .add-product-section-43264 label {
+        font-weight: bold;
+    }
+    .add-product-section-43264 input[type="text"],
+    .add-product-section-43264 input[type="number"],
+    select,
+    .add-product-section-43264 textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .add-product-section-43264 input[type="file"] {
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .add-product-section-43264 .image-preview {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .add-product-section-43264 .image-preview img {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .add-product-section-43264 input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+    .add-product-section-43264 input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    .preview-container{
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .preview-container .image-preview{
+        border: solid 1px rgb(172, 172, 172);
+    }
+</style>
+<div class="add-product-section-43264">
+<div class="container">
+<h2>Banner Form</h2>
+<form action="{%url 'edit-banner' banner_id=banner.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="name">Title:</label><br>
+    <input type="text" id="name" name="title" value="{{banner.title}}"><br>
+
+    <label for="name">Heading:</label><br>
+    <textarea id="heading" name="heading">{{banner.heading}}</textarea><br>
+    
+    <label for="name">Sub Heading:</label><br>
+    <textarea id="sub_heading" name="sub_heading" >{{banner.sub_heading}}</textarea><br>
+
+    <label for="image">Image:</label><br>
+    <input type="file" id="id_image" name="image"><br>
+    {% if banner.image %}
+        <img src="/media/{{banner.image}}" id="image_preview" alt="" width="50%">
+        {%else%}  
+        <img src="" id="image_preview" alt="" width="50%">
+    {% endif %}
+
+    <input type="submit" value="Submit">
+</form>
+</div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#id_image').change(function() {  // Assuming your file input field has id="id_image"
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+    </script>
+{% endblock body %}

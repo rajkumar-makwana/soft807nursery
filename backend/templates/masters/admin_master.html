@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {% if company %}
+    {{company.name}} 
+    {%else%}
+    Electronic      
+    {% endif %}
+      | {% block title %}
+      {% endblock title %}
+  </title>
+  <!-- Favicon -->
+  {% if company.favicon %}
+  <link rel="shortcut icon" href="/media/{{company.favicon}}" type="image/x-icon">
+  {%else%}
+  <link rel="shortcut icon" href="{% static 'images/logo/Logo.svg' %}" type="image/x-icon">
+  {%endif%}
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{% static 'css/backend_style.min.css' %}">
+  <style>
+    .logo {
+  background-image: url("{% static 'images/logo/Logo.svg'%}");
+  width: 49px;
+  height: 49px;
+}
+
+.menu-toggle {
+  background-image: url("{% static 'images/svg/Bulk/Menu-toggle-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.menu-toggle--gray {
+  background-image: url("{% static 'images/svg/Bulk/Menu-toggle-gray.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.home {
+  background-image: url("{% static 'images/svg/Bulk/Home-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.document {
+  background-image: url("{% static 'images/svg/Bulk/Document-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.folder {
+  background-image: url("{% static 'images/svg/Bulk/Folder-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.arrow-down {
+  background-image: url("{% static 'images/svg/Bulk/Arrow-DownCircle.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.image {
+  background-image: url("{% static 'images/svg/Bulk/Image-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.paper {
+  width: 24px;
+  height: 24px;
+  background-image: url("{% static 'images/svg/Bulk/Paper-white.svg' %}");
+}
+
+.message {
+  background-image: url("{% static 'images/svg/Bulk/Message-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.edit {
+  background-image: url("{% static 'images/svg/Bulk/Edit-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.category {
+  background-image: url("{% static 'images/svg/Bulk/Category-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.user-3 {
+  background-image: url("{% static 'images/svg/Bulk/3-User-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.setting {
+  background-image: url("{% static 'images/svg/Bulk/Setting-white.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.settings-line {
+  background-image: url("{% static 'images/svg/Bulk/Settings-line.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.avatar {
+  background-image: url("{% static 'images/avatar/Avatar.svg' %}");
+  width: 56px;
+  height: 56px;
+}
+
+.avatar-2 {
+  background-image: url("{% static 'images/avatar/avatar-2.svg' %}");
+  width: 40px;
+  height: 40px;
+}
+
+.notification {
+  background-image: url("{% static 'images/svg/Bulk/Notification-gray.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.arrows-up-down {
+  background-image: url("{% static 'images/svg/Bulk/Arrows-up-down.svg' %}");
+  width: 10px;
+  height: 17px;
+  margin-left: 10px;
+}
+
+.move {
+  background-image: url("{% static 'images/svg/move.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.radio {
+  background-image: url("{% static 'images/svg/radio.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.thumbnail {
+  background-image: url("{% static 'images/svg/thumbnail.svg' %}");
+  width: 60px;
+  height: 60px;
+}
+
+.time-circle {
+  background-image: url("{% static 'images/svg/Bulk/TimeCircle.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.google-drive {
+  background-image: url("{% static 'images/svg/GoogleDrive.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.dropbox {
+  background-image: url("{% static 'images/svg/dropbox.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.star {
+  background-image: url("{% static 'images/svg/Bulk/Star.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+
+.delete {
+  background-image: url("{% static 'images/svg/Bulk/Delete.svg' %}");
+  width: 24px;
+  height: 24px;
+}
+.heading{
+    text-align: center;
+}
+  </style>
+</head>
+
+<body>
+    <div class="layer"></div>
+    <!-- ! Body -->
+    <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+    <div class="page-flex">
+<aside class="sidebar">
+    <div class="sidebar-start">
+        <div class="sidebar-head">
+            <a href="{%url 'dashboard'%}" class="logo-wrapper" title="Home">
+                <span class="sr-only">Home</span>
+                <!-- <span class="icon logo" aria-hidden="true"></span> -->
+                <div class="logo" style="background: none;">
+                    <img src="/media/{{company.logo}}" alt="">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">{% if company.name %}
+                      {{company.name}}
+                      {%else%}
+                      Nursery
+                    {% endif %}</span>
+                    <span class="logo-subtitle">Dashboard</span>
+                </div>
+
+            </a>
+            <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+                <span class="sr-only">Toggle menu</span>
+                <span class="icon menu-toggle" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="sidebar-body">
+            <ul class="sidebar-body-menu">
+                <li>
+                    <a href="{%url 'dashboard'%}" data-active-url="{%url 'dashboard'%}"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+                </li>
+                <li>
+                    <a href="/"><span class="icon home" aria-hidden="true"></span>Home</a>
+                </li>
+                <li>
+                    <a href="{%url 'all-categories'%}" data-active-url="{%url 'all-categories'%}"><span class="icon home" aria-hidden="true"></span>Categories</a>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##" data-active-url="{%url 'all-products'%}" data-active-url-add="{%url 'add-product'%}">
+                        <span class="icon folder" aria-hidden="true"></span>Products
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="{%url 'all-products'%}" data-active-url="{%url 'all-products'%}">All Products</a>
+                        </li>
+                        <li>
+                            <a href="{%url 'add-product'%}" data-active-url="{%url 'add-product'%}">Add Product</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##" data-active-url="{%url 'all-banners'%}" data-active-url-add="{%url 'add-banner'%}">
+                        <span class="icon image" aria-hidden="true"></span>Banner
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="{%url 'all-banners'%}" data-active-url="{%url 'all-banners'%}">All Banners</a>
+                        </li>
+                        <li>
+                            <a href="{%url 'add-banner'%}" data-active-url="{%url 'add-banner'%}">Add Banner</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##" data-active-url-add="{%url 'add-company'%}" data-active-url="{%url 'edit-company'%}">
+                        <span class="icon paper" aria-hidden="true"></span>Company
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="{% url 'add-company' %}" data-active-url="{%url 'add-company'%}">Add Company</a>
+                        </li>
+                        <li>
+                            <a href="{%url 'edit-company'%}" data-active-url="{%url 'edit-company'%}">Edit Company</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{%url 'admin-orders'%}" data-active-url="{%url 'admin-orders'%}">
+                        <span class="icon message" aria-hidden="true"></span>
+                        Orders
+                    </a>
+                    <span class="msg-counter">{{new_orders}}</span>
+                </li>
+                <li>
+                    <a href="{%url 'contact-forms'%}" data-active-url="{%url 'contact-forms'%}">
+                        <span class="icon message" aria-hidden="true"></span>
+                        Contact Forms
+                    </a>
+                    <span class="msg-counter">{{new_contactforms}}</span>
+                </li>
+                <li>
+                    <a href="{%url 'all-reviews'%}" data-active-url="{%url 'all-reviews'%}">
+                        <span class="icon message" aria-hidden="true"></span>
+                        Reviews
+                    </a>
+                    <span class="msg-counter">{{new_reviews}}</span>
+                </li>
+                <li>
+                    <a href="{%url 'newsletters'%}" data-active-url="{%url 'newsletters'%}">
+                        <span class="icon message" aria-hidden="true"></span>
+                        Newsletters
+                    </a>
+                    <span class="msg-counter">{{new_newsletters}}</span>
+                </li>
+            </ul>
+            <!-- <span class="system-menu__title">system</span>
+            <ul class="sidebar-body-menu">
+                <li>
+                    <a href="appearance.html"><span class="icon edit" aria-hidden="true"></span>Appearance</a>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##">
+                        <span class="icon category" aria-hidden="true"></span>Extentions
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="extention-01.html">Extentions-01</a>
+                        </li>
+                        <li>
+                            <a href="extention-02.html">Extentions-02</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##">
+                        <span class="icon user-3" aria-hidden="true"></span>Users
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="users-01.html">Users-01</a>
+                        </li>
+                        <li>
+                            <a href="users-02.html">Users-02</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="##"><span class="icon setting" aria-hidden="true"></span>Settings</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <a href="{%url 'dashboard'%}" class="sidebar-user">
+            <span class="sidebar-user-img">
+                <picture><source srcset="{% static 'images/avatar/avatar-illustrated-01.webp' %}" type="image/webp"><img src="{% static 'images/avatar/avatar-illustrated-01.webp' %}" alt="User name"></picture>
+            </span>
+            <div class="sidebar-user-info">
+                <span class="sidebar-user__title">{{request.user.first_name}} {{request.user.last_name}}</span>
+                <span class="sidebar-user__subtitle">{{request.user.email}}</span>
+            </div>
+        </a>
+    </div>
+</aside>
+<div class="main-wrapper">
+    <nav class="main-nav--bg">
+    <div class="container main-nav">
+        <div class="main-nav-start">
+        <div class="search-wrapper">
+            <i data-feather="search" aria-hidden="true"></i>
+            <input type="text" placeholder="Enter keywords ..." required>
+        </div>
+        </div>
+        <div class="main-nav-end">
+        <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+            <span class="sr-only">Toggle menu</span>
+            <span class="icon menu-toggle--gray" aria-hidden="true"></span>
+        </button>
+        <div class="lang-switcher-wrapper">
+            <button class="lang-switcher transparent-btn" type="button">
+            EN
+            <i data-feather="chevron-down" aria-hidden="true"></i>
+            </button>
+            <ul class="lang-menu dropdown">
+            <li><a href="##">English</a></li>
+            <li><a href="##">French</a></li>
+            <li><a href="##">Uzbek</a></li>
+            </ul>
+        </div>
+        <button class="theme-switcher gray-circle-btn" type="button" title="Switch theme">
+            <span class="sr-only">Switch theme</span>
+            <i class="sun-icon" data-feather="sun" aria-hidden="true"></i>
+            <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
+        </button>
+        <div class="notification-wrapper">
+            <button class="gray-circle-btn dropdown-btn" title="To messages" type="button">
+            <span class="sr-only">To messages</span>
+            <span class="icon notification active" aria-hidden="true"></span>
+            </button>
+            <ul class="users-item-dropdown notification-dropdown dropdown">
+            <li>
+                <a href="##">
+                <div class="notification-dropdown-icon info">
+                    <i data-feather="check"></i>
+                </div>
+                <div class="notification-dropdown-text">
+                    <span class="notification-dropdown__title">System just updated</span>
+                    <span class="notification-dropdown__subtitle">The system has been successfully upgraded. Read more
+                    here.</span>
+                </div>
+                </a>
+            </li>
+            <li>
+                <a href="##">
+                <div class="notification-dropdown-icon danger">
+                    <i data-feather="info" aria-hidden="true"></i>
+                </div>
+                <div class="notification-dropdown-text">
+                    <span class="notification-dropdown__title">The cache is full!</span>
+                    <span class="notification-dropdown__subtitle">Unnecessary caches take up a lot of memory space and
+                    interfere ...</span>
+                </div>
+                </a>
+            </li>
+            <li>
+                <a href="##">
+                <div class="notification-dropdown-icon info">
+                    <i data-feather="check" aria-hidden="true"></i>
+                </div>
+                <div class="notification-dropdown-text">
+                    <span class="notification-dropdown__title">New Subscriber here!</span>
+                    <span class="notification-dropdown__subtitle">A new subscriber has subscribed.</span>
+                </div>
+                </a>
+            </li>
+            <li>
+                <a class="link-to-page" href="##">Go to Notifications page</a>
+            </li>
+            </ul>
+        </div>
+        <div class="nav-user-wrapper">
+            <button href="##" class="nav-user-btn dropdown-btn" title="My profile" type="button">
+            <span class="sr-only">My profile</span>
+            <span class="nav-user-img">
+                <picture><source srcset="{% static 'images/avatar/avatar-illustrated-02.webp' %}" type="image/webp"><img src="{% static 'images/avatar/avatar-illustrated-02.webp' %}" alt="User name"></picture>
+            </span>
+            </button>
+            <ul class="users-item-dropdown nav-user-dropdown dropdown">
+            <li><a href="##">
+                <i data-feather="user" aria-hidden="true"></i>
+                <span>Profile</span>
+                </a></li>
+            <li><a href="##">
+                <i data-feather="settings" aria-hidden="true"></i>
+                <span>Account settings</span>
+                </a></li>
+            <li><a class="danger" href="##">
+                <i data-feather="log-out" aria-hidden="true"></i>
+                <span>Log out</span>
+                </a></li>
+            </ul>
+        </div>
+        </div>
+    </div>
+    </nav>
+
+    
+
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">
+            {% block page-name %}
+              {{request.user.first_name | upper}}'s Dashboard
+            {% endblock page-name %}
+        </h2>
+    {% block body %}
+      
+    {% endblock body %}
+    </div>
+</main>
+</div>
+</div>
+
+<script>
+    let active_link = document.querySelectorAll('a[data-active-url="{{request.path}}"]');
+    let active_link_add = document.querySelectorAll('a[data-active-url-add="{{request.path}}"]');
+        for (let link of active_link){
+            console.log(link)
+            link.classList.add('active');
+        }
+    
+    
+        for (let link of active_link_add){
+            link.classList.add('active')
+        }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Chart library -->
+<script src="{% static 'js/chart.min.js' %}"></script>
+<!-- Icons library -->
+<script src="{% static 'js/feather.min.js' %}"></script>
+<!-- Custom scripts -->
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

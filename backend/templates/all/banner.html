@@ -1,0 +1,75 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  All Banners
+{% endblock title %}
+
+{% block page-name %}
+  Banners
+{% endblock page-name %}
+
+
+{% block body %}
+<style>
+    td{
+        text-align: center;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+{% if banners %}
+  <table class="table table-striped">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Thumbnail</td>
+            <td>Title</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+
+    <tbody>
+          
+        {% for banner in banners %}
+        <tr>
+            <td>{{banner.id}}</td>
+            <td><img src="/media/{{banner.image}}" alt="{{banner.title}}" width="40%"></td>
+            <td>{{banner.title}}</td>
+            <td><a href="{%url 'edit-banner' banner_id=banner.id%}" class="btn btn-success">Edit</a></td>
+            <td>
+                <form action="{%url 'delete-banner' banner_id=banner.id%}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger" type="button" id="id_delete_banner_button_{{banner.id}}" onclick="DeleteBannerConfirm('{{banner.id}}')">❌</button>
+                    <span id="id_delete_banner_span_{{banner.id}}" class="hidden">
+                        Do you want to delete?
+                        <button class="btn btn-danger" type="submit">Yes</button>
+                        <button class="btn btn-primary" type="button" onclick="DeleteBannerConfirm('{{banner.id}}')">No</button>
+                    </span>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+        {% endfor %}
+        {%else%}
+        <h2 class="heading">Banners Will Apper Here</h2>
+        {% endif %}
+  </table>
+
+  <script>
+    function DeleteBannerConfirm(id){
+        let span = document.getElementById(`id_delete_banner_span_${id}`);
+        let delete_button = document.getElementById(`id_delete_banner_button_${id}`);
+
+        if (span.classList.contains('hidden')){
+            span.classList.remove('hidden');
+            delete_button.classList.add('hidden')
+        }
+        else{
+            span.classList.add('hidden');
+            delete_button.classList.remove('hidden')
+        }
+    }
+  </script>
+{% endblock body %}

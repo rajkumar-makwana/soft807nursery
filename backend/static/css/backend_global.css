@@ -1,0 +1,17 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+:root{
+    --light-background-color:white;
+    --dark-background-color:black;
+    --light-font-color:black;
+    --dark-font-color:white;
+    --font-family-intern:"Inter","Open Sans","HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+}
+.flex-box{
+    display: flex;
+}
+.menu-item.active,.menu-item:hover{
+    color: red !important;
+}

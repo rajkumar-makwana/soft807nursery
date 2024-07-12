@@ -1,0 +1,115 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Categories
+{% endblock title %}
+
+{% block page-name %}
+  All Products
+{% endblock page-name %}
+
+{% block body %}
+<style>
+    .active-product,.deactive-product{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        background-color: rgb(6, 6, 35);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;   
+    }
+    .active-product .active-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #53e453;
+        box-shadow: 0px 0px 10px #53e453;
+    }
+    .deactive-product .deactive-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ff1a1a;
+        box-shadow: 0px 0px 10px #ff1a1a;
+    }
+    .thumbnail{
+        max-width: 200px;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+    <div class="all-products-wrapper">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Thumbnail</td>
+                    <td>Name</td>
+                    <td>Short Description</td>
+                    <td>Status</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                  <tr>
+                    <td>{{product.id}}</td>
+                    <td>
+                    {% for image in first_images %}
+                      {% if image.product.id == product.id %}
+                        <img src="/media/{{image.image}}" alt="" class="thumbnail">   
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.short_description |slice:":60" |safe}}...</td>
+                    <td>
+                        {% if product.is_published %}
+                          <div class="active-product">
+                            <span class="active-circle"></span>
+                            <span class="active-text">Active</span>
+                          </div>
+                          {%else%}
+                          <div class="deactive-product">
+                            <span class="deactive-circle"></span>
+                            <span class="deactive-text">Deactive</span>
+                          </div>
+                        {% endif %}</td>
+                    <td><a href="{%url 'edit-product' product_id=product.id%}" class="btn btn-success">Edit</a></td>
+                    <td>
+                        <form action="{%url 'delete-product' product_id=product.id%}" method="post">
+                            {% csrf_token %}
+                        <button class="btn btn-outline-danger" type="button" id="id_delete_product_button_{{product.id}}" onclick="confirmProductDelete('{{product.id}}')">❌</button>
+                        <span id="id_delete_product_span_{{product.id}}" class="hidden">
+                            Do you want to delete
+                                <button class="btn btn-danger" type="submit">Yes</button>
+                                <button class="btn btn-primary" type="button" onclick="confirmProductDelete('{{product.id}}')">no</button>
+                            </span>
+                        </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function confirmProductDelete(id){
+            let span = document.getElementById(`id_delete_product_span_${id}`);
+            let delete_button = document.getElementById(`id_delete_product_button_${id}`)
+            if (span.classList.contains('hidden')){
+                span.classList.remove('hidden');
+                delete_button.classList.add('hidden')
+            }
+            else{
+                span.classList.add('hidden');
+                delete_button.classList.remove('hidden')
+
+            }
+        }
+    </script>
+{% endblock body %}

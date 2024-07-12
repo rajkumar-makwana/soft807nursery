@@ -1,0 +1,63 @@
+{%load static %}
+<style>
+    .add-to-cart-btn{
+        background-color: rgba(0, 0, 0, 0.655);
+        color: white;
+        cursor: pointer;
+    }
+</style>
+<section class="new-arrivals-products-area bg-gray section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Section Heading -->
+                    <div class="section-heading text-center">
+                        <h2>NEW ARRIVALS</h2>
+                        <p>We have the latest products, it must be exciting for you</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="justify-content: center;">
+
+                <!-- Single Product Area -->
+                {% for product in new_arrivals %}
+                  
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="100ms">
+                        <!-- Product Image -->
+                        <div class="product-img">
+                            {% for image in first_images %}
+                            {% if image.product.id == product.id %}
+                            <a href="{% url 'product-details' product_id=product.id%}"><img src="/media/{{image.image}}" alt="{{image.title}}"></a>
+                            {% endif %}
+                            {% endfor %}
+                            <form action="{% url 'add-to-cart'%}" method="post">
+                                    {% csrf_token %}
+                                    <div class="product-meta d-flex">
+                                        <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
+                                        <button class="add-to-cart-btn">Add to cart</button>
+                                        <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
+                                    </div>
+                            </form>
+                        </div>
+                        <!-- Product Info -->
+                        <div class="product-info mt-15 text-center">
+                            <a href="{% url 'product-details' product_id=product.id%}">
+                                <p>{{product.name}}</p>
+                            </a>
+                            <h6>{{company.currency_symbol}} {{product.selling_price}}</h6>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Single Product Area -->
+
+                <div class="col-12 text-center">
+                    <a href="{% url 'shop'%}" class="btn alazea-btn">View All</a>
+                </div>
+
+            </div>
+        </div>
+    </section>

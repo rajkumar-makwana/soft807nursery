@@ -1,0 +1,131 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Categories
+{% endblock title %}
+
+{% block page-name %}
+  Categories
+{% endblock page-name %}
+
+{% block body %}
+<style>
+    input{
+        background-color: white;
+        border: solid 1px rgb(225, 225, 225) !important;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+  <div class="categories-wrapper">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Image</td>
+                <td>Display On Homepage</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <tr>
+                    {% csrf_token %}
+                    <td>#New</td>
+                    <td><input type="text" name="category_name" placeholder="Category Name" class="new-input"></td>
+                    <td><input type="file" name="image" class="new-input"></td>
+                    <td><select type="" name="show_on_home" class="new-input">
+                        <option value="True">Yes</option>
+                        <option value="False">No</option>
+                    </select></td>
+                    <td><button class="btn btn-primary" type="submit">Add +</button></td>
+                    <td></td>
+                </tr>
+            </form>
+            {% for category in categories %}
+            <tr>
+                <form method="post" action="{%url 'edit-category' category_id=category.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <td>{{category.id}}</td>
+                    <td>
+                        <span id="id_span_category_name_{{category.id}}">{{category.name}}</span>
+                        <input type="text" class="hidden" name="name" value="{{category.name}}" id="id_category_name_{{category.id}}"></td>
+                    
+                    <td>
+                        <input type="file" name="image" value="/media/{{category.image}}">
+                        <img src="/media/{{category.image}}" alt="" width="200px">
+                    </td>
+                    <td>
+                        <select name="show_on_home">
+                            {% if category.show_on_home %}
+                            <option value="True" selected>Yes</option>
+                            <option value="False" >No</option>
+                            {%else%}
+                            <option value="Flase" selected>No</option>
+                            <option value="True">Yes</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="button" id="id_category_edit_button_{{category.id}}" onclick="enable_input('{{category.id}}')">Edit</button>
+                        <span id="id_edit_category_span_{{category.id}}" class="hidden">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                            <button type="button" class="btn btn-danger" onclick="enable_input('{{category.id}}')">Cancel</button>
+                        </span>
+                    </td>
+                </form>
+                <form action="{%url 'delete-category' category_id=category.id%}" method="post">
+                    {% csrf_token %}
+                    <td>
+                        <button class="btn btn-outline-danger" type="button" id="id_delete_category_button_{{category.id}}" onclick="delete_confirm('{{category.id}}')">❌</button>
+                        <span class="hidden" id="id_delete_category_span_{{category.id}}">
+                            Do You want to delete? 
+                            <button class="btn btn-danger" type="submit">Yes</button> 
+                            <button class="btn btn-primary" type="button" onclick="delete_confirm('{{category.id}}')">No</button>
+                        </span>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+  <script>
+    function enable_input(id){
+        let input = document.getElementById(`id_category_name_${id}`);
+        let edit_button = document.getElementById(`id_category_edit_button_${id}`);
+        let span = document.getElementById(`id_span_category_name_${id}`);
+        let span_button = document.getElementById(`id_edit_category_span_${id}`)
+        if (input.classList.contains('hidden')){
+            span.classList.add('hidden');
+            input.classList.remove('hidden');
+            edit_button.classList.add('hidden');
+            span_button.classList.remove('hidden')
+        }
+        else{            
+            span.classList.remove('hidden');
+            input.classList.add('hidden');
+            edit_button.classList.remove('hidden');
+            span_button.classList.add('hidden')
+        }
+    }
+
+    function delete_confirm(id){
+        let span = document.getElementById(`id_delete_category_span_${id}`);
+        let delete_button = document.getElementById(`id_delete_category_button_${id}`);
+        if (span.classList.contains('hidden')){
+            span.classList.remove('hidden');
+            delete_button.classList.add('hidden');
+        }
+        else{
+            span.classList.add('hidden');
+            delete_button.classList.remove('hidden');
+
+        }
+    }
+  </script>
+{% endblock body %}

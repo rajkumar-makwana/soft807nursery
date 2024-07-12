@@ -1,0 +1,134 @@
+{% extends "masters/index_master.html" %}
+
+{% block title %}
+  Signup
+{% endblock title %}
+
+{% block body %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+.signup-user-wrapper-467346{
+    min-height: 110vh;
+    height: 110vh;
+    display: flex;
+    place-content: center;
+    background-color: #5aa037;
+}
+.signup-user-wrapper-467346 .wrapper{
+  position: relative;
+  max-width: 430px;
+  margin: auto;
+  width: 100%;
+  background: #fff;
+  /* background: transparent; */
+  padding: 34px;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.signup-user-wrapper-467346 .wrapper h2{
+  position: relative;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  /* color: white; */
+}
+.signup-user-wrapper-467346 .wrapper h2::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 28px;
+  border-radius: 12px;
+  background: #70c745;
+}
+.signup-user-wrapper-467346 .wrapper form{
+  margin-top: 30px;
+}
+.signup-user-wrapper-467346 .wrapper form .input-box{
+  height: 52px;
+  margin: 18px 0;
+}
+.signup-user-wrapper-467346 form .input-box input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding: 0 15px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #333;
+  border: 1.5px solid #C7BEBE;
+  border-bottom-width: 2.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+.signup-user-wrapper-467346 .input-box input:focus{
+  border-color: #70c745;
+}
+.signup-user-wrapper-467346 form .policy{
+  display: flex;
+  align-items: center;
+}
+.signup-user-wrapper-467346 form h3{
+  color: #707070;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+.signup-user-wrapper-467346 .input-box.button input{
+  color: #fff;
+  letter-spacing: 1px;
+  border: none;
+  /* background: #4070f4; */
+  background: #70c745;
+  cursor: pointer;
+}
+.signup-user-wrapper-467346 .input-box.button input:hover{
+  background: #83e950;
+}
+.signup-user-wrapper-467346 form .text h3{
+ color: #333;
+ /* color: white; */
+ width: 100%;
+ text-align: center;
+}
+.signup-user-wrapper-467346 form .text h3 a{
+  color: #70c745;
+  text-decoration: none;
+}
+.signup-user-wrapper-467346 form .text h3 a:hover{
+  text-decoration: underline;
+}
+</style>
+<div class="signup-user-wrapper-467346">
+<div class="wrapper">
+    <h2>Registration</h2>
+    <form action="{%url 'signup'%}" method="post">
+        {% csrf_token %}
+      <div class="input-box">
+        <input type="text" name="first_name" placeholder="First name" style="width: 48%; display: inline;" required autofocus>
+        <input type="text" name="last_name" placeholder="Last name" style="width: 48%; display: inline;" >
+      </div>
+      <div class="input-box">
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="input-box">
+        <input type="password" name="password" placeholder="Create password" required>
+      </div>
+      <div class="input-box">
+        <input type="password" name="confirm_password" placeholder="Confirm password" required>
+      </div>
+      <div class="policy">
+        <input type="checkbox" required>
+        <h3>I accept all terms & condition</h3>
+      </div>
+      <div class="input-box button">
+        <input type="Submit" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="#">Login now</a></h3>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock body %}

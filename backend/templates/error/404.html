@@ -1,0 +1,25 @@
+{% extends "masters/index_master.html" %}
+{% block title %}
+404 Page Not Found
+{% endblock title %}
+
+{% block body %}
+  <style>
+    .container404{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: rgb(56, 56, 56);
+      flex-direction: column;
+    }
+    .container404 h1, .container404 p{
+      color:white;
+    }
+  </style>
+  <div class="container404" >
+    <h1>404 Page Not Found</h1>
+    <p>Oops! The Page Does Not Exists</p>
+  </div>
+
+{% endblock body %}

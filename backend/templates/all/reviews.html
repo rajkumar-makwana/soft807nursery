@@ -1,0 +1,89 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Reviews
+{% endblock title %}
+
+{% block page-name %}
+  All Reviews
+{% endblock page-name %}
+
+{% block body %}
+{% load custom_filter %}
+<style>
+    .active-product,.deactive-product{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        background-color: rgb(6, 6, 35);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;   
+    }
+    .active-product .active-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #53e453;
+        box-shadow: 0px 0px 10px #53e453;
+    }
+    .deactive-product .deactive-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ff1a1a;
+        box-shadow: 0px 0px 10px #ff1a1a;
+    }
+    .thumbnail{
+        max-width: 200px;
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+    <div class="all-products-wrapper">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Email</td>
+                    <td>Nickname</td>
+                    <td>Product</td>
+                    <td>Reason</td>
+                    <td>Comments</td>
+                    <td>Rating</td>
+                    <td>Date</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                  <tr>
+                    <td>#{{review.id}}</td>
+                    <td>{{review.user.email}}</td>
+                    <td>
+                        {{review.nickname}}
+                    </td>
+                    <td>{{review.product.name}}</td>
+                    <td>{{review.reason}}</td>
+                    <td>{{review.comments}}</td>
+                    <td>{{review.rating}}</td>
+                    <td>{{review.date_time}}</td>
+                    <td>
+                        {% if review.is_read %}
+                          ✔️
+                          {%else%}
+                          <form action="{%url 'read-review'%}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{review.id}}" name="review_id">
+                            <button class="btn btn-success">Approve</button>
+                          </form>
+                        {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock body %}

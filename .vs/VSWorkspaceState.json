@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.idea",
+    "\\backend",
+    "\\backend\\migrations",
+    "\\media"
+  ],
+  "SelectedNode": "\\backend\\forms.py",
+  "PreviewInSolutionExplorer": false
+}

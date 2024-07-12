@@ -1,0 +1,88 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Contact Forms
+{% endblock title %}
+
+{% block page-name %}
+  All Contact Forms
+{% endblock page-name %}
+
+{% block body %}
+{% load custom_filter %}
+<style>
+    .active-product,.deactive-product{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        background-color: rgb(6, 6, 35);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;   
+    }
+    .active-product .active-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #53e453;
+        box-shadow: 0px 0px 10px #53e453;
+    }
+    .deactive-product .deactive-circle{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ff1a1a;
+        box-shadow: 0px 0px 10px #ff1a1a;
+    }
+    .thumbnail{
+        max-width: 200px;
+    }
+    .hidden{
+        display: none;
+    }
+    .all-products-wrapper textarea{
+        background-color: transparent;
+    }
+</style>
+    <div class="all-products-wrapper">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Email</td>
+                    <td>Name</td>
+                    <td>Subject</td>
+                    <td>Message</td>
+                    <td>Date</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contact in contactforms %}
+                  <tr>
+                    <td>#{{contact.id}}</td>
+                    <td>{{contact.email}}</td>
+                    <td>{{contact.name}}</td>
+                    <td>{{contact.subject}}</td>
+                    <td><textarea cols="30" rows="4" readonly>{{contact.message}}</textarea></td>
+                    <td>
+                        {{contact.date_time}}
+                    </td>
+                    <td>
+                        {% if contact.is_read %}
+                          ✔️
+                          {%else%}
+                          <form action="{%url 'approve-contact-form'%}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{contact.id}}" name="contact_id">
+                            <button class="btn btn-success" type="submit">Mark as Read</button>
+                          </form>
+                        {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock body %}

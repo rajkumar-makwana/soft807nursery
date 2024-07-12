@@ -1,0 +1,195 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Edit Product - {{product.name}}
+{% endblock title %}
+
+{% block page-name %}
+  Edit - {{product.name}}
+{% endblock page-name %}
+
+{% block body %}
+<!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" integrity="sha512-VCEWnpOl7PIhbYMcb64pqGZYez41C2uws/M/mDdGPy+vtEJHd9BqbShE4/VNnnZdr7YCPOjd+CBmYca/7WWWCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        tinymce.init({
+            selector: '#description',
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image'
+        });
+        tinymce.init({
+            selector: '#short_description',
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image'
+        });
+    </script>
+<style>
+    .add-product-section-43264 .container {
+        max-width: 90%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .add-product-section-43264 h2 {
+        text-align: center;
+    }
+    .add-product-section-43264 form {
+        margin-top: 20px;
+    }
+    .add-product-section-43264 label {
+        font-weight: bold;
+    }
+    .add-product-section-43264 input[type="text"],
+    .add-product-section-43264 input[type="number"],
+    select,
+    .add-product-section-43264 textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .add-product-section-43264 input[type="file"] {
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .add-product-section-43264 .image-preview {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .add-product-section-43264 .image-preview img {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .add-product-section-43264 input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+    .add-product-section-43264 input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    .preview-container{
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .preview-container .image-preview{
+        border: solid 1px rgb(172, 172, 172);
+    }
+</style>
+<div class="add-product-section-43264">
+<div class="container">
+<h2>Product Form</h2>
+<form action="{%url 'edit-product' product_id=product.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" value="{{product.name}}"><br>
+
+    <label for="category">Category:</label><br>
+    <select name="category" id="category" required>
+        <option value="--">--</option>
+        {% for category in categories %}
+        {% if product.category.id == category.id %}
+            <option value="{{category.id}}" selected>{{category.name}}</option>
+        {%else%}
+            <option value="{{category.id}}">{{category.name}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+
+    <label for="cost_price">Cost Price:</label><br>
+    <input type="text" id="cost_price" name="cost_price" value="{{product.cost_price}}" required><br>
+
+    <label for="selling_price">Selling Price:</label><br>
+    <input type="text" id="selling_price" name="selling_price" value="{{product.selling_price}}" required><br>
+
+    <label for="short_description">Short Description:</label><br>
+    <textarea id="short_description" name="short_description" rows="4">{{product.short_description | safe}}</textarea><br>
+
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" rows="8" >{{product.description | safe}}</textarea><br>
+
+    <label for="image">Image:</label><br>
+    <input type="file" id="images" name="images" accept="image/*" multiple onchange="previewImages(event)"><br>
+
+        <div class="preview-container" id="previewContainer">
+
+                {% for image in images %}
+                  <img src="/media/{{image.image}}" alt="image" class="image-preview">
+                {% endfor %}
+        </div>
+
+        <label for="is_best_selling">Include in Best Selling?</label>
+        <select name="is_best_selling" id="is_best_selling">
+        {% if product.is_best_selling %}
+        <option value="True" selected>Yes</option>
+        <option value="False">No</option>
+        {%else%}
+        <option value="True">Yes</option>
+        <option value="False" selected>No</option>
+        {% endif %}
+    </select>
+      
+
+    <label for="is_new_arrival">New Arrival</label>
+    <select name="is_new_arrival" id="is_new_arrival">
+        {% if product.is_new_arrival %}
+        <option value="True" selected>Yes</option>
+        <option value="False">No</option>
+        {%else%}
+        <option value="True">Yes</option>
+        <option value="False" selected>No</option>
+        {% endif %}
+    </select>
+
+    <label for="is_published">Publish:</label><br>
+    <select name="is_published" id="is_published">
+        {% if product.is_published %}
+        <option value="True" selected>Yes</option>
+        <option value="False">No</option>
+        {%else%}
+        <option value="True">Yes</option>
+        <option value="False" selected>No</option>
+        {% endif %}
+    </select>
+
+    <input type="submit" value="Save">
+</form>
+</div>
+</div>
+<script>
+function previewImages(event) {
+        var previewContainer = document.getElementById('previewContainer');
+        previewContainer.innerHTML = '';
+
+        var files = event.target.files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                var imagePreview = document.createElement('div');
+                imagePreview.className = 'image-preview';
+                var image = document.createElement('img');
+                image.src = event.target.result;
+                imagePreview.appendChild(image);
+                previewContainer.appendChild(imagePreview);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+{% endblock body %}

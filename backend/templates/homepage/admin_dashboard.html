@@ -1,0 +1,65 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Dashboard
+{% endblock title %}
+
+{% block body %}
+<style>
+  .dashboard-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .dashboard-wrapper .card-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 10vh;
+  }
+</style>  
+<div class="dashboard-wrapper">
+  <div class="card">
+    <div class="card-header">
+      Reviews
+    </div>
+    <div class="card-footer">
+      <a href="{%url 'all-reviews'%}" class="btn btn-success">View All Reviews</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Newsletters
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'newsletters'%}" class="btn btn-success">View All Newsletters</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Orders
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'admin-orders'%}" class="btn btn-success">View All Orders</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Products
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'all-products'%}" class="btn btn-success">View All Products</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      Add - Products
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'add-product'%}" class="btn btn-success">Add Product</a>
+    </div>
+  </div>
+</div>
+{% endblock body %}

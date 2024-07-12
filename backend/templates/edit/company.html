@@ -1,0 +1,148 @@
+{% extends "masters/admin_master.html" %}
+
+{% block title %}
+  Edit Company
+{% endblock title %}
+
+{% block page-name %}
+  Company
+{% endblock page-name %}
+
+{% block body %}
+<!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" integrity="sha512-VCEWnpOl7PIhbYMcb64pqGZYez41C2uws/M/mDdGPy+vtEJHd9BqbShE4/VNnnZdr7YCPOjd+CBmYca/7WWWCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        tinymce.init({
+            selector: '#description',
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image'
+        });
+        tinymce.init({
+            selector: '#short_description',
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image'
+        });
+    </script>
+<style>
+    .add-product-section-43264 .container {
+        max-width: 90%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .add-product-section-43264 h2 {
+        text-align: center;
+    }
+    .add-product-section-43264 form {
+        margin-top: 20px;
+    }
+    .add-product-section-43264 label {
+        font-weight: bold;
+    }
+    .add-product-section-43264 input[type="text"],
+    .add-product-section-43264 input[type="number"],
+    select,
+    textarea,
+    .add-product-section-43264 textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .add-product-section-43264 input[type="file"] {
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .add-product-section-43264 .image-preview {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .add-product-section-43264 .image-preview img {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .add-product-section-43264 input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+    .add-product-section-43264 input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    .preview-container{
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .preview-container .image-preview{
+        border: solid 1px rgb(172, 172, 172);
+    }
+</style>
+<div class="add-product-section-43264">
+<div class="container">
+<h2>Company Form</h2>
+<form action="{%url 'edit-company'%}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" value="{{company.name}}" required><br>
+    
+    <label for="name">Description:</label><br>
+    <textarea id="id_description" name="description" >{{company.description | safe}}</textarea><br>
+    
+    <label for="name">Phone Number (+91):</label><br>
+    <input type="text" id="id_phone_number" name="phone_number" value="{{company.phone_number}}" required><br>
+    
+    <label for="name">Address:</label><br>
+    <input type="text" id="id_address" name="address" value="{{company.address}}"><br>
+    
+    <label for="name">Email:</label><br>
+    <input type="email" id="id_email" name="email" value="{{company.email}}" required><br>
+
+    <label for="image">Logo:</label><br>
+    <input type="file" id="id_logo" name="logo" ><br>
+        {% if company.logo %}
+            <img id="id_preview_image1" src="/media/{{company.logo}}" style="max-width: 300px;max-height: 300px;">
+        {%else%}
+            <img id="id_preview_image1" src="" alt="" style="max-width: 300px;max-height: 300px;">
+        {% endif %}
+    <br>
+    <label for="image">Favicon:</label><br>
+    <input type="file" id="id_favicon" name="favicon"><br>
+        {% if company.favicon %}
+            <img src="/media/{{company.favicon}}" alt="" style="max-width: 300px;max-height: 300px;">
+        {%else%}
+            <img src="" alt="" style="max-width: 300px;max-height: 300px;">
+        {% endif %}
+`
+
+    <input type="submit" value="Submit">
+</form>
+</div>
+</div>
+<script>
+document.getElementById('id_logo').addEventListener('change', function(event) {
+    console.log("changed");
+      var file = event.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(event) {
+        // document.getElementById('id_preview_image1').style.display = 'block'; // Show the image preview
+        document.getElementById('id_preview_image1').src = event.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+</script>
+{% endblock body %}
